@@ -1,10 +1,10 @@
 {
   "name": "dpd-ratelimit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "ratelimit incoming requests based on ip or user",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test.js"
   },
   "repository":"https://github.com/coderofsalvation/dpd-ratelimit",
   "keywords": ["ratelimit","deployd","throttle","requests","api"],
