@@ -1,5 +1,7 @@
 ratelimit incoming requests based on ip or user
 
+![Build Status](https://travis-ci.org/coderofsalvation/dpd-ratelimit.svg?branch=master)
+
 <img src="https://media.giphy.com/media/GzS9F4X206zle/giphy.gif" width="150" style="width:150px"/>
 
 ## Usage 
