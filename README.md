@@ -12,17 +12,17 @@ Now in the dashboard add an event-resource called `/ratelimit`
 
 and add this config:
 
-		{
-		  "ip":true,
-			"rate": 0.1,
-			"burst": 1,
-			"overrides": {
-				"192.345.345.1": {
-					"rate": 0,
-					"burst": 0
-				}
-			}
-		}
+    {
+      "ip":true,
+      "rate": 0.1,
+      "burst": 1,
+      "overrides": {
+        "192.345.345.1": {
+          "rate": 0,
+          "burst": 0
+        }
+      }
+    }
 
 > Voila! You have automatic ratelimiting based on ip
 
@@ -32,17 +32,17 @@ see [here](https://github.com/defunctzombie/ratelimit-middleware) for all rateli
 
 Use a config like this, to allow certain usernames to override the default settings (0=unlimited):
 
-		{
-		  "username":true,
-			"rate": 0.1,
-			"burst": 1,
-			"overrides": {
-				"john": {
-					"rate": 0,
-					"burst": 0
-				}
-			}
-		}
+    {
+      "username":true,
+      "rate": 0.1,
+      "burst": 1,
+      "overrides": {
+        "john": {
+          "rate": 0,
+          "burst": 0
+        }
+      }
+    }
 
 ## Why 
 
