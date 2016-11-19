@@ -1,4 +1,4 @@
-ratelimit incomsing requests based on ip or user
+ratelimit incoming requests based on ip or user
 
 <img src="https://media.giphy.com/media/GzS9F4X206zle/giphy.gif" width="150" style="width:150px"/>
 
