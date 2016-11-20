@@ -5,6 +5,7 @@ var monkeypatch = require('monkeypatch');
   if( !Router.prototype.ratelimit ){
     try{
       var config = require( process.cwd()+'/resources/ratelimit/config.json')
+      Router.prototype.ratelimitConfig = config
       Router.prototype.ratelimit = require('ratelimit-middleware')(config)
     }catch (e){
       console.log(e)
@@ -14,8 +15,18 @@ var monkeypatch = require('monkeypatch');
   }  
 
   monkeypatch( Router.prototype, 'route', function(original, req, res){
-    if( !Router.prototype.ratelimit || (req && req.session && this.server.options.env == 'development') )
-      return original(req, res)
+    if( !Router.prototype.ratelimit ) return original(req, res)
+
+    // lets see whether we have specific urls to ratelimit 
+    if( Router.prototype.ratelimitConfig && Router.prototype.ratelimitConfig.urls ){
+      var ignore = true
+      Router.prototype.ratelimitConfig.urls.map( function(regex){
+        if( req.url.match( new RegExp(regex, "g") ) != null ) ignore = false
+      })
+      if( ignore ) return original(req, res)
+    }
+
+    // lets see whether we have a user
     req.username = req.session.user && req.session.user.username ?
                    req.session.user.username : 
                    "default"

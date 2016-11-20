@@ -4,6 +4,7 @@ var Router
 var reqcount = 0
 var limitcount = 0
 var config = {
+  urls: ["^/foobar"], 
   username: true, 
   burst:1, 
   rate:1, 
@@ -44,31 +45,13 @@ monkeypatch( require('module').prototype,'require', function(original, modname )
 var Router = require('deployd/lib/router')
 eval( require('fs').readFileSync('./index.js').toString() )
 
-console.log("TEST (user:none,env:development) 10 reqs")
-reqcount = 0
-limitcount = 0
-var me = { server:{ options: { env: 'development' } } }
-for( var i =0; i < 10; i++ ){
-  Router.prototype.route.apply( me, [{ 
-    session: {                          // req
-      user:false
-    }
-  }, {                                  // res
-    res:{
-      end: function(){
-        console.log("end!")
-      }
-    } 
-  }])
-}
-if( limitcount != 0 || reqcount != 10 ) error("reqcount not ok")
-
-console.log("TEST (user:none, env:production) 10 reqs")
+console.log("TEST (user:none,env:production) 10 reqs")
 reqcount = 0
 limitcount = 0
 var me = { server:{ options: { env: 'production' } } }
 for( var i =0; i < 10; i++ ){
   Router.prototype.route.apply( me, [{ 
+    url:"/foobar", 
     session: {                          // req
       user:false
     }
@@ -86,6 +69,7 @@ limitcount = 0
 var me = { server:{ options: { env: 'production' } } }
 for( var i =0; i < 10; i++ ){
   Router.prototype.route.apply( me, [{ 
+    url:"/foobar", 
     session: {                          // req
       user:{
         username: "john"  
@@ -105,11 +89,60 @@ limitcount = 0
 var me = { server:{ options: { env: 'development' } } }
 for( var i =0; i < 10; i++ ){
   Router.prototype.route.apply( me, [{ 
+    url:"/foobar", 
     session: {                          // req
       user:{
         username: "john"  
       }
     }
+  }, {                                  // res
+    end: function(){
+      limitcount++
+    }
+  }])
+}
+if( reqcount != 10 || limitcount != 0 ) error("reqcount not ok")
+
+console.log("TEST (user:none, env:production, url:should not be ratelimited) 10 reqs")
+reqcount = 0
+limitcount = 0
+var me = { server:{ options: { env: 'development' } } }
+for( var i =0; i < 10; i++ ){
+  Router.prototype.route.apply( me, [{ 
+    url: '/flop',                       // req
+    session: {user:false}
+  }, {                                  // res
+    end: function(){
+      limitcount++
+    }
+  }])
+}
+if( reqcount != 10 || limitcount != 0 ) error("reqcount not ok")
+
+console.log("TEST (user:none, env:production, url:should be ratelimited) 10 reqs")
+reqcount = 0
+limitcount = 0
+var me = { server:{ options: { env: 'production' } } }
+for( var i =0; i < 10; i++ ){
+  Router.prototype.route.apply( me, [{ 
+    url: '/foobar',                     // req
+    session: {user:false}
+  }, {                                  // res
+    end: function(){
+      limitcount++
+    }
+  }])
+}
+if( reqcount != 0 || limitcount != 10 ) error("reqcount not ok")
+
+console.log("TEST (user:none, env:production, url:should not be ratelimited) 10 reqs")
+reqcount = 0
+limitcount = 0
+var me = { server:{ options: { env: 'production' } } }
+for( var i =0; i < 10; i++ ){
+  Router.prototype.route.apply( me, [{ 
+    url: '/foo',                        // req
+    session: {user:false}
   }, {                                  // res
     end: function(){
       limitcount++

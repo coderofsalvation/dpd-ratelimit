@@ -1,6 +1,6 @@
 {
   "name": "dpd-ratelimit",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "ratelimit incoming requests based on ip or user",
   "main": "index.js",
   "scripts": {
