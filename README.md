@@ -28,6 +28,8 @@ and add this config:
 
 > Voila! You have automatic ratelimiting based on ip
 
+In case you have a frontend (`/public`), specify an `urls`-section as described below.
+
 see [here](https://github.com/defunctzombie/ratelimit-middleware) for all ratelimiting options
 
 ## Userbased ratelimiting
@@ -45,6 +47,31 @@ Use a config like this, to allow certain usernames to override the default setti
         }
       }
     }
+
+## Ratelimiting specific url regexes 
+
+By defaults ratelimiting is applied to *everything* .
+You'll probably agree that a frontend (`/public`) is not suitable for rateliming.
+In those cases you want to add `urls` to your config, to specify which urls should be ratelimited:
+
+    {
+      "username":true,
+      "urls": [ "^/foo($|/)" ], 
+      "rate": 0.1,
+      "burst": 1,
+      "overrides": {
+        "john": {
+          "rate": 0,
+          "burst": 0
+        }
+      }
+    }
+
+`urls` reverses ratelimiting behaviour: it ratelimits only those resources which match the regexes. In this case:
+
+* `/foo`
+* `/foo/`
+* `/foo/123`
 
 ## Why 
 
