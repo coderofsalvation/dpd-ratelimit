@@ -15,7 +15,7 @@ var monkeypatch = require('monkeypatch');
   }  
 
   monkeypatch( Router.prototype, 'route', function(original, req, res){
-    if( !Router.prototype.ratelimit ) return original(req, res)
+    if( !Router.prototype.ratelimit || res.internal ) return original(req, res)
 
     // lets see whether we have specific urls to ratelimit 
     if( Router.prototype.ratelimitConfig && Router.prototype.ratelimitConfig.urls ){
