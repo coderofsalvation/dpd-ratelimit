@@ -12,7 +12,7 @@ Now in the dashboard add an event-resource called `/ratelimit`
 
 <img src="https://raw.githubusercontent.com/coderofsalvation/dpd-ratelimit/master/screenshot.png"/>
 
-and add this config:
+and add this config (`resources/ratelimit/config.json`):
 
     {
       "ip":true,
